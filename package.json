@@ -9,7 +9,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "node ./dist/server.js",
+    "start": "node ./dist/app.js",
     "build": "tsc",
     "watch": "tsc --watch"
   },
