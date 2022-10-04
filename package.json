@@ -30,6 +30,8 @@
     "dotenv": "^16.0.3",
     "log4js": "^6.7.0",
     "telegraf": "^4.7.0",
+    "telegraf-ratelimit": "^2.0.0",
+    "telegraf-sender": "^2.3.4",
     "telegraf-session-local": "^2.1.0"
   }
 }
