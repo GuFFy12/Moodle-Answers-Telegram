@@ -116,6 +116,6 @@
   },
   "include": [
     "src",
-    "src/types/decs.d.ts"
+    "src/types/decs.types.d.ts"
   ]
 }

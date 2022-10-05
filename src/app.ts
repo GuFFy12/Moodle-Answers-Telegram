@@ -4,9 +4,9 @@ import log4js, { Logger } from "log4js";
 import LocalSession from "telegraf-session-local";
 import fs from "fs";
 import { IBotContext, ICourse, IKeysNames, IStatistics } from "./types/app.types.js";
-import answersParser from "./utils/answersParser.js";
-import MainCommands from "./commands/mainCommands.js";
-import AnswersCommands from "./commands/answersCommands.js";
+import answersParser from "./utils/answersParser.util.js";
+import MainCommands from "./commands/mainCommands.commands.js";
+import AnswersCommands from "./commands/answersCommands.commands.js";
 import sender from "telegraf-sender";
 import rateLimit from "telegraf-ratelimit";
 

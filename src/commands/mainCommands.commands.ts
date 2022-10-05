@@ -1,8 +1,8 @@
-import { mainKeyboard } from "../utils/keyboards.js";
+import { mainKeyboard } from "../utils/keyboards.util.js";
 import { Telegraf } from "telegraf";
 import log4js, { Logger } from "log4js";
 import { IBotContext, IDB, IStatistics } from "../types/app.types.js";
-import ctxReply from "../utils/ctxReply.js";
+import ctxReply from "../utils/ctxReply.util.js";
 import LocalSession from "telegraf-session-local";
 
 export default class MainCommands {

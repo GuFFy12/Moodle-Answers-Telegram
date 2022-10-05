@@ -1,6 +1,6 @@
 import { IAnswer, ICourse, IKeysNames, ILecture, ISection, IStatistics } from "../types/app.types.js";
-import arraySplit from "./arraySplit.js";
-import renameKey from "./renameKey.js";
+import arraySplit from "./arraySplit.util.js";
+import renameKey from "./renameKey.util.js";
 
 export default (answers: ICourse, maxKeySize: number) => {
 	const statistics: IStatistics = {

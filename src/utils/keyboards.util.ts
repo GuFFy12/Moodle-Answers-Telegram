@@ -1,4 +1,4 @@
-import arraySplit from "./arraySplit.js";
+import arraySplit from "./arraySplit.util.js";
 import { ICourse } from "../types/app.types.js";
 
 export const mainKeyboard = {

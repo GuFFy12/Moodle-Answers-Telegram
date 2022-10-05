@@ -4,12 +4,12 @@ import {
 	createSectionsKeyboard,
 	createTestsKeyboard,
 	mainKeyboard,
-} from "../utils/keyboards.js";
+} from "../utils/keyboards.util.js";
 import { Telegraf } from "telegraf";
 import log4js, { Logger } from "log4js";
 import { IBotContext, ICourse, IKeysNames } from "../types/app.types.js";
-import answersToText from "../utils/answersToText.js";
-import ctxReply from "../utils/ctxReply.js";
+import answersToText from "../utils/answersToText.util.js";
+import ctxReply from "../utils/ctxReply.util.js";
 
 export default class AnswersCommands {
 	private readonly logger: Logger;
