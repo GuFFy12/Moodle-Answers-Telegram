@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "USATU SDO Answers Telegram Bot",
   "type": "module",
-  "main": "./dist/server.js",
+  "main": "./dist/app.js",
   "repository": "https://github.com/GuFFy12/USATU-SDO-Answers-Telegram-Bot",
   "author": "GuFFy12",
   "license": "MIT",
