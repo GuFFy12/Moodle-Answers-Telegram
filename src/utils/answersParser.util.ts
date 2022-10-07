@@ -1,6 +1,9 @@
 import { IAnswer, ICourse, IKeysNames, ILecture, ISection, IStatistics } from "../types/app.types.js";
 import arraySplit from "./arraySplit.util.js";
 import renameKey from "./renameKey.util.js";
+import log4js from "log4js";
+
+const logger = log4js.getLogger("Answers");
 
 export default (answers: ICourse, maxKeySize: number) => {
 	const statistics: IStatistics = {
@@ -84,6 +87,15 @@ export default (answers: ICourse, maxKeySize: number) => {
 
 		return result;
 	}, {});
+
+	logger.info(
+		Object.keys(statistics)
+			.reduce((result: string[], statistic) => {
+				result.push(`${statistic}: ${statistics[statistic]}`);
+				return result;
+			}, [])
+			.join(", ")
+	);
 
 	return { answersParsed, statistics, keysNames };
 };

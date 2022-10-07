@@ -18,12 +18,13 @@ class App {
 	private readonly bot: Telegraf<IBotContext>;
 
 	public constructor() {
+		this.log4jsInit();
 		this.logger = log4js.getLogger(this.constructor.name);
 
 		const infoText = fs.readFileSync("./help.txt", "utf-8");
 
 		const answers = JSON.parse(fs.readFileSync("./answers.json").toString()) as ICourse;
-		const { answersParsed, statistics, keysNames } = answersParser(answers, process.env.MAX_KEY_SIZE);
+		const { answersParsed, statistics, keysNames } = answersParser(answers, parseInt(process.env.MAX_KEY_SIZE));
 
 		this.bot = new Telegraf(process.env.BOT_TOKEN);
 		const localSession = new LocalSession();
@@ -39,6 +40,30 @@ class App {
 		process.once("SIGTERM", () => this.bot.stop("SIGTERM"));
 	}
 
+	private readonly log4jsInit = () => {
+		log4js.configure({
+			appenders: {
+				out: { type: "stdout" },
+				app: {
+					type: "file",
+					filename: "./logs/app.log",
+					maxLogSize: parseInt(process.env.MAX_LOG_SIZE),
+					backups: parseInt(process.env.MAX_LOG_BACKUPS),
+					compress: true,
+				},
+			},
+			categories: {
+				default: { appenders: ["out"], level: "all" },
+				App: { appenders: ["app"], level: "all" },
+				MainCommands: { appenders: ["app"], level: "all" },
+				AnswersCommands: { appenders: ["app"], level: "all" },
+				Answers: { appenders: ["app"], level: "all" },
+				Reply: { appenders: ["app"], level: "all" },
+			},
+			pm2: true,
+		});
+	};
+
 	private readonly commandsInit = (
 		answers: ICourse,
 		statistics: IStatistics,
@@ -46,11 +71,13 @@ class App {
 		keysNames: IKeysNames,
 		infoText: string
 	) => {
+		this.logger.info("Initialize commands...");
 		void new MainCommands(this.bot, process.env.OWNER_ID, localSession, statistics, infoText);
 		void new AnswersCommands(this.bot, answers, keysNames);
 	};
 
 	private readonly modulesInit = (localSession: LocalSession<unknown>) => {
+		this.logger.info("Initialize modules...");
 		this.bot.use(localSession.middleware());
 		this.bot.use(sender as MiddlewareFn<Context>);
 		this.bot.use(

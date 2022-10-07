@@ -60,12 +60,7 @@ export interface IAnswer {
 }
 
 export interface IStatistics {
-	courses: number;
-	sections: number;
-	lectures: number;
-	tests: number;
-	questions: number;
-	answers: number;
+	[statistic: string]: number;
 }
 
 export interface IKeysNames {

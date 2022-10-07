@@ -36,29 +36,33 @@ export default class MainCommands {
 
 	private readonly commandsInit = () => {
 		this.bot.start((ctx) => {
-			void ctxReply(
-				ctx,
-				"📌 Используй /help что бы узнать больше! Канал бота: https://t.me/+AzlTc2COncJmYzAy",
-				mainKeyboard
-			);
+			this.logger.info("New user was created");
 
 			if (Object.keys(ctx.session).length === 0) {
 				ctx.session.checkedTests = 0;
 			}
+
+			return void ctxReply(
+				ctx,
+				"📌 Используй /help что бы узнать больше! Канал бота: https://t.me/+AzlTc2COncJmYzAy",
+				mainKeyboard
+			);
 		});
 
 		this.bot.hears(/❌ Отмена|Отмена|отмена/, (ctx) => {
+			this.logger.info("Cancel command has been called");
 			delete ctx.session.course;
 			delete ctx.session.section;
 			delete ctx.session.lecture;
 
-			void ctxReply(ctx, `🌠 Возвращаюсь в главное меню!`, mainKeyboard);
+			return void ctxReply(ctx, `🌠 Возвращаюсь в главное меню!`, mainKeyboard);
 		});
 
 		this.bot.hears(/✨ Профиль|Профиль|профиль/, (ctx) => {
+			this.logger.info("Profile command has been called");
 			if (!ctx.session.checkedTests) ctx.session.checkedTests = 0;
 
-			void ctxReply(
+			return void ctxReply(
 				ctx,
 				`🆔 Ваш id: ${ctx.update.message.from.id}\
     			\n🔑 Тестов проверено: ${ctx.session.checkedTests}`,
@@ -67,6 +71,7 @@ export default class MainCommands {
 		});
 
 		this.bot.hears(/🔥 Статистика|Статистика|статистика/, (ctx) => {
+			this.logger.info("Statistic command has been called");
 			const sessions = (this.localSession.DB as IDB).value().sessions;
 
 			const checkedTests = sessions.reduce((result, user) => {
@@ -76,7 +81,7 @@ export default class MainCommands {
 				return result;
 			}, 0);
 
-			void ctxReply(
+			return void ctxReply(
 				ctx,
 				`⏱ Тестов проверенно через этого бота: ${checkedTests}\
 				\n😃 Всего пользователей: ${sessions.length}\
@@ -91,14 +96,22 @@ export default class MainCommands {
 		});
 
 		this.bot.hears(/❓ Помощь|Помощь|помощь|help/, (ctx) => {
-			void ctxReply(ctx, this.infoText, mainKeyboard);
+			this.logger.info("Help command has been called");
+			return void ctxReply(ctx, this.infoText, mainKeyboard);
 		});
 
 		this.bot.command("sender", async (ctx) => {
-			if (ctx.message.from.id.toString() !== this.owner_id) return;
+			if (ctx.message.from.id.toString() !== this.owner_id) {
+				this.logger.warn(`Unknown user try to call sender command, id: ${ctx.message.from.id}`);
+				return;
+			}
+			this.logger.info("Sender command has been called");
 
 			const text = ctx.message.text.replace("/sender", "").trim();
-			if (!text) return void ctxReply(ctx, "Сообщение для рассылки не найдено!");
+			if (!text) {
+				this.logger.error(`Sender error: message was not found`);
+				return void ctxReply(ctx, "Сообщение для рассылки не найдено!");
+			}
 
 			const users = (this.localSession.DB as IDB).value().sessions.map((session) => session.id.split(":")[0]);
 
@@ -111,7 +124,8 @@ export default class MainCommands {
 				},
 			});
 
-			void ctxReply(ctx, broadcast.toString());
+			this.logger.info(`Sender command was been executed with output: ${broadcast.toString()}`);
+			return void ctxReply(ctx, broadcast.toString());
 		});
 	};
 }

@@ -3,10 +3,12 @@ declare global {
 		interface ProcessEnv {
 			BOT_TOKEN: string;
 			OWNER_ID: string;
-			MAX_KEY_SIZE: number;
-			MAX_KEYBOARD_COLUMNS: number;
-			MESSAGE_WINDOW: number;
-			MESSAGE_LIMIT: number;
+			MAX_KEY_SIZE: string;
+			MAX_KEYBOARD_COLUMNS: string;
+			MESSAGE_WINDOW: string;
+			MESSAGE_LIMIT: string;
+			MAX_LOG_SIZE: string;
+			MAX_LOG_BACKUPS: string;
 		}
 	}
 }
