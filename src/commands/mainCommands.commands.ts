@@ -4,6 +4,7 @@ import log4js, { Logger } from "log4js";
 import { IBotContext, IDB, IStatistics } from "../types/app.types.js";
 import ctxReply from "../utils/ctxReply.util.js";
 import LocalSession from "telegraf-session-local";
+import clearStatistic from "../utils/clearStatistic.js";
 
 export default class MainCommands {
 	private readonly logger: Logger;
@@ -72,24 +73,12 @@ export default class MainCommands {
 
 		this.bot.hears(/🔥 Статистика|Статистика|статистика/, (ctx) => {
 			this.logger.info("Statistic command has been called");
-			const sessions = (this.localSession.DB as IDB).value().sessions;
-
-			const checkedTests = sessions.reduce((result, user) => {
-				if (typeof user.data.checkedTests === "number") {
-					result += user.data.checkedTests;
-				}
-				return result;
-			}, 0);
-
-			const activeUsers = sessions.reduce((result, session) => {
-				if (session.data.checkedTests && session.data.checkedTests > 0) result += 1;
-				return result;
-			}, 0);
+			const clearStatisticData = clearStatistic(this.localSession);
 
 			return void ctxReply(
 				ctx,
-				`⏱ Тестов проверенно через этого бота: ${checkedTests}\
-				\n😃 Всего пользователей (активных): ${activeUsers}\
+				`⏱ Тестов проверенно через этого бота: ${clearStatisticData.checkedTests}\
+				\n😃 Всего пользователей (активных): ${clearStatisticData.activeUsers}\
 				\n\n🗂 Всего предметов: ${this.statistics.courses}\
 				\n📚 Всего разделов: ${this.statistics.sections}\
 				\n📒 Всего лекций: ${this.statistics.lectures}\

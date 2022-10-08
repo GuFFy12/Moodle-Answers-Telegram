@@ -9,6 +9,7 @@ import MainCommands from "./commands/mainCommands.commands.js";
 import AnswersCommands from "./commands/answersCommands.commands.js";
 import sender from "telegraf-sender";
 import rateLimit from "telegraf-ratelimit";
+import clearStatistic from "./utils/clearStatistic.js";
 
 dotenv.config();
 
@@ -25,6 +26,14 @@ class App {
 
 		const answers = JSON.parse(fs.readFileSync("./answers.json").toString()) as ICourse;
 		const { answersParsed, statistics, keysNames } = answersParser(answers, parseInt(process.env.MAX_KEY_SIZE));
+		this.logger.info(
+			Object.keys(statistics)
+				.reduce((result: string[], statistic) => {
+					result.push(`${statistic}: ${statistics[statistic]}`);
+					return result;
+				}, [])
+				.join(", ")
+		);
 
 		this.bot = new Telegraf(process.env.BOT_TOKEN);
 		const localSession = new LocalSession();
@@ -34,6 +43,10 @@ class App {
 
 		void this.bot.launch().then(() => {
 			this.logger.info("Telegram bot started");
+			const clearStatisticData = clearStatistic(localSession);
+			this.logger.info(
+				`LocalDB loaded, users count (active): ${clearStatisticData.activeUsers}, checked tests: ${clearStatisticData.checkedTests}`
+			);
 		});
 
 		process.once("SIGINT", () => this.bot.stop("SIGINT"));
