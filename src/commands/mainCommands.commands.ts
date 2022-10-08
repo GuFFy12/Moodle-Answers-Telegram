@@ -81,10 +81,15 @@ export default class MainCommands {
 				return result;
 			}, 0);
 
+			const activeUsers = sessions.reduce((result, session) => {
+				if (session.data.checkedTests && session.data.checkedTests > 0) result += 1;
+				return result;
+			}, 0);
+
 			return void ctxReply(
 				ctx,
 				`⏱ Тестов проверенно через этого бота: ${checkedTests}\
-				\n😃 Всего пользователей: ${sessions.length}\
+				\n😃 Всего пользователей (активных): ${activeUsers}\
 				\n\n🗂 Всего предметов: ${this.statistics.courses}\
 				\n📚 Всего разделов: ${this.statistics.sections}\
 				\n📒 Всего лекций: ${this.statistics.lectures}\
