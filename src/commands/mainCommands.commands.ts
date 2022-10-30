@@ -36,6 +36,34 @@ export default class MainCommands {
 	}
 
 	private readonly commandsInit = () => {
+		this.bot.command("sender", async (ctx) => {
+			if (ctx.message.from.id.toString() !== this.owner_id) {
+				this.logger.warn(`Unknown user try to call sender command, id: ${ctx.message.from.id}`);
+				return;
+			}
+			this.logger.info("Sender command has been called");
+
+			const text = ctx.message.text.replace("/sender", "").trim();
+			if (!text) {
+				this.logger.error(`Sender error: message was not found`);
+				return void ctxReply(ctx, "Сообщение для рассылки не найдено!");
+			}
+
+			const users = (this.localSession.DB as IDB).value().sessions.map((session) => session.id.split(":")[0]);
+
+			const broadcast = await ctx.msg.broadcast({
+				users,
+				isCopy: false,
+				message: {
+					text,
+					extra: { parse_mode: "HTML" },
+				},
+			});
+
+			this.logger.info(`Sender command was been executed with output: ${broadcast.toString()}`);
+			return void ctxReply(ctx, broadcast.toString());
+		});
+
 		this.bot.start((ctx) => {
 			this.logger.info("New user was created");
 
@@ -92,34 +120,6 @@ export default class MainCommands {
 		this.bot.hears(/❓ Помощь|Помощь|помощь|help/, (ctx) => {
 			this.logger.info("Help command has been called");
 			return void ctxReply(ctx, this.infoText, mainKeyboard);
-		});
-
-		this.bot.command("sender", async (ctx) => {
-			if (ctx.message.from.id.toString() !== this.owner_id) {
-				this.logger.warn(`Unknown user try to call sender command, id: ${ctx.message.from.id}`);
-				return;
-			}
-			this.logger.info("Sender command has been called");
-
-			const text = ctx.message.text.replace("/sender", "").trim();
-			if (!text) {
-				this.logger.error(`Sender error: message was not found`);
-				return void ctxReply(ctx, "Сообщение для рассылки не найдено!");
-			}
-
-			const users = (this.localSession.DB as IDB).value().sessions.map((session) => session.id.split(":")[0]);
-
-			const broadcast = await ctx.msg.broadcast({
-				users,
-				isCopy: false,
-				message: {
-					text,
-					extra: { parse_mode: "HTML" },
-				},
-			});
-
-			this.logger.info(`Sender command was been executed with output: ${broadcast.toString()}`);
-			return void ctxReply(ctx, broadcast.toString());
 		});
 	};
 }
