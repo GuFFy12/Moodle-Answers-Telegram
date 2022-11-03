@@ -70,7 +70,6 @@ class App {
 				App: { appenders: ["app"], level: "all" },
 				MainCommands: { appenders: ["app"], level: "all" },
 				AnswersCommands: { appenders: ["app"], level: "all" },
-				Answers: { appenders: ["app"], level: "all" },
 				Reply: { appenders: ["app"], level: "all" },
 			},
 			pm2: true,
