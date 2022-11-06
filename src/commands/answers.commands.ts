@@ -1,3 +1,9 @@
+import log4js, { Logger } from "log4js";
+import { Telegraf } from "telegraf";
+
+import { IBotContext, ICourse, IKeysNames } from "../types/app.types.js";
+import answersToText from "../utils/answersToText.util.js";
+import ctxReply from "../utils/ctxReply.util.js";
 import {
 	coursesKeyboard,
 	createLecturesKeyboard,
@@ -5,11 +11,6 @@ import {
 	createTestsKeyboard,
 	mainKeyboard,
 } from "../utils/keyboards.util.js";
-import { Telegraf } from "telegraf";
-import log4js, { Logger } from "log4js";
-import { IBotContext, ICourse, IKeysNames } from "../types/app.types.js";
-import answersToText from "../utils/answersToText.util.js";
-import ctxReply from "../utils/ctxReply.util.js";
 
 export default class AnswersCommands {
 	private readonly logger: Logger;
@@ -38,10 +39,6 @@ export default class AnswersCommands {
 
 		this.bot.hears(this.keysNames.courses, (ctx) => {
 			this.logger.info("Courses command has been called");
-			if (!this.answers[ctx.message.text]) {
-				this.logger.error("Course was not found");
-				return void ctxReply(ctx, `🚫 Предмет не найден!`);
-			}
 
 			if (Object.keys(this.answers[ctx.message.text]).length === 1) {
 				ctx.session.section = Object.keys(this.answers[ctx.message.text])[0];

@@ -1,5 +1,6 @@
-import { IDB } from "../types/app.types.js";
 import LocalSession from "telegraf-session-local";
+
+import { IDB } from "../types/app.types.js";
 
 export default (localSession: LocalSession<unknown>) => {
 	const sessions = (localSession.DB as IDB).value().sessions;

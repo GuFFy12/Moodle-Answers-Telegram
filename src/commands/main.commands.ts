@@ -1,10 +1,11 @@
-import { mainKeyboard } from "../utils/keyboards.util.js";
-import { Telegraf } from "telegraf";
 import log4js, { Logger } from "log4js";
-import { IBotContext, IDB, IStatistics } from "../types/app.types.js";
-import ctxReply from "../utils/ctxReply.util.js";
+import { Telegraf } from "telegraf";
 import LocalSession from "telegraf-session-local";
+
+import { IBotContext, IDB, IStatistics } from "../types/app.types.js";
 import clearStatistic from "../utils/clearStatistic.js";
+import ctxReply from "../utils/ctxReply.util.js";
+import { mainKeyboard } from "../utils/keyboards.util.js";
 
 export default class MainCommands {
 	private readonly logger: Logger;
@@ -14,14 +15,14 @@ export default class MainCommands {
 	private readonly owner_id: string;
 	private readonly localSession: LocalSession<unknown>;
 	private readonly statistics: IStatistics;
-	private readonly infoText: string;
+	private readonly helpText: string;
 
 	public constructor(
 		bot: Telegraf<IBotContext>,
 		owner_id: string,
 		localSession: LocalSession<unknown>,
 		statistics: IStatistics,
-		infoText: string
+		helpText: string
 	) {
 		this.logger = log4js.getLogger(this.constructor.name);
 
@@ -30,7 +31,7 @@ export default class MainCommands {
 		this.owner_id = owner_id;
 		this.localSession = localSession;
 		this.statistics = statistics;
-		this.infoText = infoText;
+		this.helpText = helpText;
 
 		void this.commandsInit();
 	}
@@ -93,7 +94,7 @@ export default class MainCommands {
 
 			return void ctxReply(
 				ctx,
-				`🆔 Ваш id: ${ctx.update.message.from.id}\
+				`🆔 Ваш ID: ${ctx.update.message.from.id}\
     			\n🔑 Тестов проверено: ${ctx.session.checkedTests}`,
 				mainKeyboard
 			);
@@ -119,7 +120,7 @@ export default class MainCommands {
 
 		this.bot.hears(/❓ Помощь|Помощь|помощь|help/, (ctx) => {
 			this.logger.info("Help command has been called");
-			return void ctxReply(ctx, this.infoText, mainKeyboard);
+			return void ctxReply(ctx, this.helpText, mainKeyboard);
 		});
 	};
 }

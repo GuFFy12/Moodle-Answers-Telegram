@@ -1,5 +1,5 @@
-import arraySplit from "./arraySplit.util.js";
 import { ICourse } from "../types/app.types.js";
+import arraySplit from "./arraySplit.util.js";
 
 export const mainKeyboard = {
 	reply_markup: {

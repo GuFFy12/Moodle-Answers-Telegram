@@ -7,9 +7,9 @@ export interface IBotContext extends Context {
 
 interface ISessionData {
 	checkedTests?: number;
-	course?: string | undefined;
-	section?: string | undefined;
-	lecture?: string | undefined;
+	course?: string;
+	section?: string;
+	lecture?: string;
 }
 
 interface IMsg extends Context {
