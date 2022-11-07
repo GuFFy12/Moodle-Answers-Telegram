@@ -22,7 +22,6 @@ class App {
 	public constructor() {
 		this.log4jsInit();
 		this.logger = log4js.getLogger(this.constructor.name);
-		this.logger.addContext("user", "");
 
 		const helpText = fs.readFileSync("./help.txt", "utf-8");
 
@@ -67,6 +66,17 @@ class App {
 					compress: true,
 					layout: {
 						type: "pattern",
+						pattern: "%d %p %c %m",
+					},
+				},
+				ctx: {
+					type: "file",
+					filename: "./logs/app.log",
+					maxLogSize: parseInt(process.env.MAX_LOG_SIZE),
+					backups: parseInt(process.env.MAX_LOG_BACKUPS),
+					compress: true,
+					layout: {
+						type: "pattern",
 						pattern: "%d %p %c %X{user} %m",
 					},
 				},
@@ -74,8 +84,8 @@ class App {
 			categories: {
 				default: { appenders: ["out"], level: "all" },
 				App: { appenders: ["app"], level: "all" },
-				MainCommands: { appenders: ["app"], level: "all" },
-				AnswersCommands: { appenders: ["app"], level: "all" },
+				MainCommands: { appenders: ["ctx"], level: "all" },
+				AnswersCommands: { appenders: ["ctx"], level: "all" },
 				Reply: { appenders: ["app"], level: "all" },
 			},
 			pm2: true,
