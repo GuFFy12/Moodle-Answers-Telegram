@@ -33,11 +33,13 @@ export default class AnswersCommands {
 
 	private readonly commandsInit = () => {
 		this.bot.hears(/✅ Ответы|Ответы|ответы/, (ctx) => {
+			this.logger.addContext("user", ctx.update.message.from.id);
 			this.logger.info("Answers command has been called");
 			void ctxReply(ctx, `🗂 Выбери предмет:`, coursesKeyboard(this.keysNames.courses));
 		});
 
 		this.bot.hears(this.keysNames.courses, (ctx) => {
+			this.logger.addContext("user", ctx.update.message.from.id);
 			this.logger.info("Courses command has been called");
 
 			if (Object.keys(this.answers[ctx.message.text]).length === 1) {
@@ -55,6 +57,7 @@ export default class AnswersCommands {
 		});
 
 		this.bot.hears(this.keysNames.sections, (ctx) => {
+			this.logger.addContext("user", ctx.update.message.from.id);
 			this.logger.info("Sections command has been called");
 			try {
 				if (!ctx.session.course) {
@@ -79,6 +82,7 @@ export default class AnswersCommands {
 		});
 
 		this.bot.hears(this.keysNames.lectures, (ctx) => {
+			this.logger.addContext("user", ctx.update.message.from.id);
 			this.logger.info("Lectures command has been called");
 			try {
 				if (!ctx.session.course || !ctx.session.section) {
@@ -103,6 +107,7 @@ export default class AnswersCommands {
 		});
 
 		this.bot.hears(this.keysNames.tests, (ctx) => {
+			this.logger.addContext("user", ctx.update.message.from.id);
 			this.logger.info("Tests command has been called");
 			try {
 				if (!ctx.session.course || !ctx.session.section || !ctx.session.lecture) {

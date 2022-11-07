@@ -38,6 +38,7 @@ export default class MainCommands {
 
 	private readonly commandsInit = () => {
 		this.bot.command("sender", async (ctx) => {
+			this.logger.addContext("user", ctx.update.message.from.id);
 			if (ctx.message.from.id.toString() !== this.owner_id) {
 				this.logger.warn(`Unknown user try to call sender command, id: ${ctx.message.from.id}`);
 				return;
@@ -66,9 +67,11 @@ export default class MainCommands {
 		});
 
 		this.bot.start((ctx) => {
-			this.logger.info("New user was created");
+			this.logger.addContext("user", ctx.update.message.from.id);
+			this.logger.info(`Start command has been called`);
 
 			if (Object.keys(ctx.session).length === 0) {
+				this.logger.info("New user was created");
 				ctx.session.checkedTests = 0;
 			}
 
@@ -80,6 +83,7 @@ export default class MainCommands {
 		});
 
 		this.bot.hears(/❌ Отмена|Отмена|отмена/, (ctx) => {
+			this.logger.addContext("user", ctx.update.message.from.id);
 			this.logger.info("Cancel command has been called");
 			delete ctx.session.course;
 			delete ctx.session.section;
@@ -89,6 +93,7 @@ export default class MainCommands {
 		});
 
 		this.bot.hears(/✨ Профиль|Профиль|профиль/, (ctx) => {
+			this.logger.addContext("user", ctx.update.message.from.id);
 			this.logger.info("Profile command has been called");
 			if (!ctx.session.checkedTests) ctx.session.checkedTests = 0;
 
@@ -101,6 +106,7 @@ export default class MainCommands {
 		});
 
 		this.bot.hears(/🔥 Статистика|Статистика|статистика/, (ctx) => {
+			this.logger.addContext("user", ctx.update.message.from.id);
 			this.logger.info("Statistic command has been called");
 			const clearStatisticData = clearStatistic(this.localSession);
 
@@ -119,6 +125,7 @@ export default class MainCommands {
 		});
 
 		this.bot.hears(/❓ Помощь|Помощь|помощь|help/, (ctx) => {
+			this.logger.addContext("user", ctx.update.message.from.id);
 			this.logger.info("Help command has been called");
 			return void ctxReply(ctx, this.helpText, mainKeyboard);
 		});

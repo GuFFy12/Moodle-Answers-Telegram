@@ -22,6 +22,7 @@ class App {
 	public constructor() {
 		this.log4jsInit();
 		this.logger = log4js.getLogger(this.constructor.name);
+		this.logger.addContext("user", "");
 
 		const helpText = fs.readFileSync("./help.txt", "utf-8");
 
@@ -64,6 +65,10 @@ class App {
 					maxLogSize: parseInt(process.env.MAX_LOG_SIZE),
 					backups: parseInt(process.env.MAX_LOG_BACKUPS),
 					compress: true,
+					layout: {
+						type: "pattern",
+						pattern: "%d %p %c %X{user} %m",
+					},
 				},
 			},
 			categories: {
