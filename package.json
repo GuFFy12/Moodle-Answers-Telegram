@@ -1,38 +1,35 @@
 {
-  "name": "usatu-sdo-answers-tg",
+  "name": "ugatu-sdo-answers-telegram",
   "version": "1.0.0",
-  "description": "USATU SDO Answers Telegram Bot",
-  "type": "module",
-  "main": "./dist/app.js",
-  "repository": "https://github.com/GuFFy12/USATU-SDO-Answers-Telegram-Bot",
+  "description": "UGATU SDO Answers Telegram",
   "author": "GuFFy12",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "node ./dist/app.js",
-    "build": "tsc",
-    "watch": "tsc --watch"
-  },
-  "devDependencies": {
-    "@types/node": "^18.7.23",
-    "@typescript-eslint/eslint-plugin": "^5.0.0",
-    "@typescript-eslint/parser": "^5.34.0",
-    "eslint": "8.22.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-config-standard-with-typescript": "^22.0.0",
-    "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-n": "^15.0.0",
-    "eslint-plugin-promise": "^6.0.0",
-    "eslint-plugin-simple-import-sort": "^8.0.0",
-    "prettier": "^2.7.1",
-    "typescript": "*"
+    "build": "tsc --build",
+    "start": "node dist/bot",
+    "start:dev": "tsc-watch --onSuccess \"yarn start\"",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
   "dependencies": {
-    "dotenv": "^16.0.3",
-    "log4js": "^6.7.0",
-    "telegraf": "^4.7.0",
-    "telegraf-ratelimit": "^2.0.0",
-    "telegraf-sender": "^2.3.4",
-    "telegraf-session-local": "^2.1.0"
+    "@grammyjs/conversations": "^1.1.2",
+    "@grammyjs/menu": "^1.2.1",
+    "@grammyjs/storage-prisma": "^2.3.0",
+    "@prisma/client": "^4.16.0",
+    "grammy": "^1.16.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.1",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "prettier": "^2.3.2",
+    "prisma": "^4.16.0",
+    "tsc-watch": "^6.0.4",
+    "typescript": "^5.1.3"
   }
 }
