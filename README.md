@@ -1,6 +1,8 @@
-# UGATU-SDO-Answers-Telegram
+# Moodle-Answers-Telegram
 
-UGATU SDO Answers Telegram
+Moodle Answers Telegram
+
+This repository is part from moodle answers collector. Check more info: https://github.com/GuFFy12/Moodle-Answers-Backend
 
 #TODO
 1) Gracefully conversations shutdown
@@ -8,4 +10,4 @@ UGATU SDO Answers Telegram
 3) Answer menu (tried, menu logic wtf)
 4) Sender send edited message
 
-Проект заморожен. Нестабильная версия.
+Project frozen. Unstable version.
